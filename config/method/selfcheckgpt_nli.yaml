@@ -1,0 +1,11 @@
+_target_: src.methods.CustomSelfCheckNLI
+model_name: ${model_name} 
+dtype: float16 
+device: cuda
+aggregation: mean
+cache_dir: cache/sent_scores
+generated_responses_dir: cache/generated_responses
+
+num_return_sequences: 20
+temperature: 1.0
+max_new_tokens: 256
