@@ -1,9 +1,0 @@
-Metadata-Version: 2.4
-Name: setup.py
-Version: 1.0
-Author: kaali100
-Author-email: kaali100@hhu.de
-License-File: LICENSE
-Dynamic: author
-Dynamic: author-email
-Dynamic: license-file
