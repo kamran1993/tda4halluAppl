@@ -172,3 +172,9 @@ cython_debug/
 .DS_Store
 */.DS_Store
 ._.DS_Store
+
+# # # # # # # # # # # #
+# Project specific
+# # # # # # # # # # # #
+
+data/raw/dialogue_data/
