@@ -32,12 +32,8 @@ def get_sent_scores(
     def spec_token(model_name):
         if model_name in [
             "Mistral-7B-Instruct-v0.1",
-            "Llama-2-7b-chat-hf",
-            "Llama-2-13b-chat-hf",
         ]:
             return "</s>"
-        elif model_name in ["Llama-3.1-8B-Instruct"]:
-            return "<|eot_id|>"
         else:
             return "<|endoftext|>"
 
@@ -69,8 +65,8 @@ class CustomSelfCheckNLI(HallucinationDetectionMethod):
     """
 
     aggregation: Literal["min", "max", "mean"] = "mean"
-    model_name: Literal["Llama-2-7b-chat-hf", "Mistral-7B-Instruct-v0.1"] = (
-        "Llama-2-7b-chat-hf"
+    model_name: Literal["Mistral-7B-Instruct-v0.1"] = (
+        "Mistral-7B-Instruct-v0.1"
     )
     dtype: str = "float16"
     device: str = "cuda"

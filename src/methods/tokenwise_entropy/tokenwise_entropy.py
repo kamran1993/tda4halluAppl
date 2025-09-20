@@ -50,8 +50,8 @@ class TokenwiseEntropy(HallucinationDetectionMethod):
     ----------
     aggregation : Literal['max', 'min', 'mean']
         The method to aggregate the entropy scores. Options are 'max', 'min', or 'mean'.
-    model_name : Literal["Llama-2-7b-chat-hf", "Mistral-7B-Instruct-v0.1"]
-        The name of the pre-trained model to use for computing entropies. Choices are 'Llama-2-7b-chat-hf' or
+    model_name : Literal["Mistral-7B-Instruct-v0.1"]
+        The name of the pre-trained model to use for computing entropies. Choices are
         'Mistral-7B-Instruct-v0.1'.
     half : bool
         Whether to use half precision for the model. Default is True. Using half precision can reduce memory

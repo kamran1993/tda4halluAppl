@@ -25,8 +25,8 @@ class INSIDE(HallucinationDetectionMethod):
     layer: int = 16
     regularization_alpha: float = 1e-3
     aggregation: Literal["max", "min", "mean", "last"] = "last"
-    model_name: Literal["Llama-2-7b-chat-hf", "Mistral-7B-Instruct-v0.1"] = (
-        "Llama-2-7b-chat-hf"
+    model_name: Literal["Mistral-7B-Instruct-v0.1"] = (
+        "Mistral-7B-Instruct-v0.1"
     )
     dtype: Literal["float32", "float16", "bfloat16"] = "float16"
     device: str = "cuda"

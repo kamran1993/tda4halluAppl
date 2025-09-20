@@ -16,12 +16,8 @@ class XSum(HallucinationDetectionDataset):
 
     model_name: tp.Literal[
         "Mistral-7B-Instruct-v0.1",
-        "Llama-2-7b-chat-hf",
-        "Llama-2-13b-chat-hf",
-        "Llama-3.1-8B-Instruct",
-        "Qwen2.5-7B-Instruct",
     ]
-    source_file: str = "data/raw/XSum/xsum_Llama-2-7b-chat-hf.csv"
+    source_file: str = "data/raw/XSum/xsum_Mistral-7B-Instruct-v0.1.csv"
     split: str = "original"
     val_size: int | float = 100
     random_state: int = 42
@@ -57,29 +53,9 @@ class XSum(HallucinationDetectionDataset):
         df["prompt"] = df.apply(insert_context_question, axis=1)
         if self.model_name in [
             "Mistral-7B-Instruct-v0.1",
-            "Llama-2-7b-chat-hf",
-            "Llama-2-13b-chat-hf",
         ]:
             df["prompt"] = df["prompt"].apply(lambda x: f"<s>[INST] {x} [/INST]")
             df["response"] = df["response"].apply(lambda x: f"{x} </s>")
-
-        elif self.model_name == "Llama-3.1-8B-Instruct":
-            df["prompt"] = df["prompt"].apply(lambda x: f"<|begin_of_text|>{x}")
-            df["response"] = df["response"].apply(lambda x: f"{x}<|eot_id|>")
-
-        elif self.model_name == "Qwen2.5-7B-Instruct":
-            tokenizer = AutoTokenizer.from_pretrained("Qwen/Qwen2.5-7B-Instruct")
-
-            def prompt_to_template(prompt: str):
-                messages = [
-                    {"role": "user", "content": prompt},
-                ]
-                return tokenizer.apply_chat_template(
-                    messages, tokenize=False, add_generation_prompt=True
-                )
-
-            df["prompt"] = df["prompt"].apply(prompt_to_template)
-            df["response"] = df["response"].apply(lambda x: f"{x}<|endoftext|>")
 
         else:
             raise NotImplementedError(

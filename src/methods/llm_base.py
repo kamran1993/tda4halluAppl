@@ -35,7 +35,7 @@ def move_causal_lm_output_to_cpu(output: CausalLMOutputWithPast) -> CausalLMOutp
 class LLMBase:
     """Class for extracting internal states of the LLM."""
 
-    model_name: Literal["Llama-2-7b-chat-hf", "Mistral-7B-Instruct-v0.1"]
+    model_name: Literal["Mistral-7B-Instruct-v0.1"]
     dtype: str = "float16"
     device: str = "cuda"
     llm: AutoModelForCausalLM = None
@@ -45,21 +45,13 @@ class LLMBase:
     temperature: float = 1.0
     max_new_tokens: int = 512
 
-    def get_model_id(self):
-        if self.model_name == "Llama-2-7b-chat-hf":
-            model_id = "meta-llama/Llama-2-7b-chat-hf"
-        elif self.model_name == "Mistral-7B-Instruct-v0.1":
-            model_id = "/gpfs/project/kaali100/mistral-7b"
-        elif self.model_name == "Llama-3.1-8B-Instruct":
-            model_id = "meta-llama/Llama-3.1-8B-Instruct"
-        elif self.model_name == "Llama-2-13b-chat-hf":
-            model_id = "meta-llama/Llama-2-13b-chat-hf"
-        elif self.model_name == "Qwen2.5-7B-Instruct":
-            model_id = "Qwen/Qwen2.5-7B-Instruct"
+    def get_model_path(self):
+        if self.model_name == "Mistral-7B-Instruct-v0.1":
+            model_path = "/gpfs/project/kaali100/mistral-7b"
         else:
             raise ValueError(f"Unsupported model: {self.model_name}")
 
-        return model_id
+        return model_path
 
     def instantiate_llm(self):
         """Load LLM and tokenizer."""
@@ -67,7 +59,7 @@ class LLMBase:
         # Load API key based on the model
         # torch.set_default_tensor_type(torch.cuda.HalfTensor)
 
-        model_id = self.get_model_id()
+        model_id = self.get_model_path()
 
         llm = AutoModelForCausalLM.from_pretrained(
             model_id, torch_dtype=self.dtype, device_map=self.device, attn_implementation="eager"
@@ -131,12 +123,8 @@ class LLMBase:
         def spec_token(model_name):
             if model_name in [
                 "Mistral-7B-Instruct-v0.1",
-                "Llama-2-7b-chat-hf",
-                "Llama-2-13b-chat-hf",
             ]:
                 return "</s>"
-            elif model_name in ["Llama-3.1-8B-Instruct"]:
-                return "<|eot_id|>"
             else:
                 return "<|endoftext|>"
 

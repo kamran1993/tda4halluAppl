@@ -38,7 +38,7 @@ class RAGTruth(HallucinationDetectionDataset):
     """
 
     model_name: Literal[
-        "Mistral-7B-Instruct-v0.1", "Llama-2-7b-chat-hf", "Llama-2-13b-chat-hf"
+        "Mistral-7B-Instruct-v0.1"
     ]
     task_type: str = "QA"
     source_dir: str = "data/raw/RAGTruth"
@@ -49,8 +49,6 @@ class RAGTruth(HallucinationDetectionDataset):
     names_dict: dict = field(
         default_factory=lambda: {
             "Mistral-7B-Instruct-v0.1": "mistral-7B-instruct",
-            "Llama-2-7b-chat-hf": "llama-2-7b-chat",
-            "Llama-2-13b-chat-hf": "llama-2-13b-chat",
         }
     )
 
@@ -112,14 +110,6 @@ class RAGTruth(HallucinationDetectionDataset):
         tmp["response"] = tmp["response"].apply(lambda x: f"{x}</s>")
 
         tmp["response_len"] = tmp["response"].apply(lambda x: len(x.split(" ")))
-
-        if (self.task_type == "Summary") and (self.model_name == "Llama-2-13b-chat-hf"):
-            tmp["length"] = tmp["response"].apply(lambda x: len(x.split(" "))) + tmp[
-                "prompt"
-            ].apply(lambda x: len(x.split(" ")))
-            tmp = tmp[tmp["length"] <= 1450]
-            tmp.sort_values(by=["length"], ascending=False, inplace=True)
-            tmp.drop(columns=["length"], inplace=True)
 
         return tmp
 

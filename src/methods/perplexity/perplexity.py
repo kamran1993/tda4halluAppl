@@ -83,8 +83,8 @@ def get_logits(
 
 @dataclass
 class Perplexity(HallucinationDetectionMethod):
-    model_name: Literal["Llama-2-7b-chat-hf", "Mistral-7B-Instruct-v0.1"] = (
-        "Llama-2-7b-chat-hf"
+    model_name: Literal["Mistral-7B-Instruct-v0.1"] = (
+        "Mistral-7B-Instruct-v0.1"
     )
     
     min_k: Optional[float] = None

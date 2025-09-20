@@ -16,10 +16,6 @@ class SQuAD(HallucinationDetectionDataset):
 
     model_name: tp.Literal[
         "Mistral-7B-Instruct-v0.1",
-        "Llama-2-7b-chat-hf",
-        "Llama-2-13b-chat-hf",
-        "Llama-3.1-8B-Instruct",
-        "Meta-Llama-3-8B-Instruct",
     ]
     source_dir: str = "data/raw/SQuAD"
     val_size: int | float = 100
@@ -56,8 +52,6 @@ class SQuAD(HallucinationDetectionDataset):
         df.rename(columns={"generated_answer": "response"}, inplace=True)
         if self.model_name in [
             "Mistral-7B-Instruct-v0.1",
-            "Llama-2-7b-chat-hf",
-            "Llama-2-13b-chat-hf",
         ]:
             df["prompt"] = (
                 "<s>[INST] "
@@ -68,18 +62,9 @@ class SQuAD(HallucinationDetectionDataset):
                 + df["question"]
                 + "\nAnswer: [/INST]"
             )
-            if self.model_name in ["Mistral-7B-Instruct-v0.1", "Llama-2-7b-chat-hf"]:
+            if self.model_name in ["Mistral-7B-Instruct-v0.1"]:
                 df["id"] = df.index
             df["response"] = df["response"].apply(lambda x: f"{x}</s>")
-
-        elif self.model_name == "Llama-3.1-8B-Instruct":
-            df["prompt"] = df.apply(insert_context_question, axis=1)
-            df["prompt"] = df["prompt"].apply(lambda x: f"<|begin_of_text|>{x}")
-            df["response"] = df["response"].apply(lambda x: f"{x}<|eot_id|>")
-
-        elif self.model_name == "Qwen2.5-7B-Instruct":
-            tokenizer = AutoTokenizer.from_pretrained("Qwen/Qwen2.5-7B-Instruct")
-            df["prompt"] = df.apply(insert_context_question, axis=1)
 
             def prompt_to_template(prompt: str):
                 messages = [

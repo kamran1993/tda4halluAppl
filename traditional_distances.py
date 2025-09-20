@@ -23,11 +23,6 @@ device = "cuda"
 load_dotenv()
 names_dict = {
     "Mistral-7B-Instruct-v0.1": "mistralai/Mistral-7B-Instruct-v0.1",
-    "Llama-2-7b-chat-hf": "meta-llama/Llama-2-7b-chat-hf",
-    "Llama-2-13b-chat-hf": "meta-llama/Llama-2-13b-chat-hf",
-    "Llama-3.1-8B-Instruct": "meta-llama/Llama-3.1-8B-Instruct",
-    "Meta-Llama-3-8B-Instruct": "meta-llama/Meta-Llama-3-8B-Instruct",
-    "Qwen2.5-7B-Instruct": "Qwen/Qwen2.5-7B-Instruct",
 }
 
 
