@@ -21,11 +21,12 @@ from transformers import AutoModelForCausalLM, AutoTokenizer
 device = "cuda"
 
 load_dotenv()
+current_folder = os.path.dirname(os.path.abspath(__file__))
 names_dict = {
-    "Mistral-7B-Instruct-v0.1": "../models/mistral-7b",
-    "Phi-3.5-mini-instruct": "../models/phi-3.5-mini-instruct",
-    "LUSTER": "../models/LUSTER/data/model_checkpoints/luster-full",
-    "SC_GPT": "../models/SC-GPT"
+    "Mistral-7B-Instruct-v0.1": current_folder + "/../models/mistral-7b",
+    "Phi-3.5-mini-instruct": current_folder + "/../models/phi-3.5-mini-instruct",
+    "LUSTER": current_folder + "/../models/LUSTER/data/model_checkpoints/luster-full",
+    "SC_GPT": current_folder + "/../models/SC-GPT"
 }
 
 

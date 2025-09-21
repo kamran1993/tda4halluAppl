@@ -15,6 +15,7 @@ from transformers.modeling_outputs import CausalLMOutputWithPast
 from .utils import STOP_SEQUENCES, StoppingCriteriaSub, postprocess_generation
 
 load_dotenv()
+current_folder = os.path.dirname(os.path.abspath(__file__))
 
 def move_causal_lm_output_to_cpu(output: CausalLMOutputWithPast) -> CausalLMOutputWithPast:
     if output.past_key_values is not None:
@@ -47,13 +48,13 @@ class LLMBase:
 
     def get_model_path(self):
         if self.model_name == "Mistral-7B-Instruct-v0.1":
-            model_path = "../../.../models/mistral-7b"
+            model_path = current_folder + "/../../../models/mistral-7b"
         elif self.model_name == "Phi-3.5-mini-instruct":
-            model_path = "../../../models/phi-3.5-mini-instruct"
+            model_path = current_folder + "/../../../models/phi-3.5-mini-instruct"
         elif self.model_name == "LUSTER":
-            model_path = "../../../models/LUSTER/data/model_checkpoints/luster-full"
+            model_path = current_folder + "/../../../models/LUSTER/data/model_checkpoints/luster-full"
         elif self.model_name == "SC-GPT":
-            model_path = "../../../models/SC-GPT"
+            model_path = current_folder + "/../../../models/SC-GPT"
         else:
             raise ValueError(f"Unsupported model: {self.model_name}")
 
