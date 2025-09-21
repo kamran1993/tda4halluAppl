@@ -36,9 +36,9 @@ class MTopDiv(HallucinationDetectionMethod):
 
     Attributes
     ----------
-    model_name : Literal["Mistral-7B-Instruct-v0.1"]
-        The name of the pre-trained model to use for computing divergences. Choices are/is
-        'Mistral-7B-Instruct-v0.1'.
+    model_name : Literal["Mistral-7B-Instruct-v0.1", "Phi-3.5-mini-instruct", "LUSTER", "SC-GPT"]
+        The name of the pre-trained model to use for computing divergences. Choices are
+        'Mistral-7B-Instruct-v0.1', 'Phi-3.5-mini-instruct', 'LUSTER' and 'SC-GPT'.
     dtype : str
         The data type used for the LLM inference, e.g., 'float16', 'float32'. Determines the precision of computations.
     device : str
@@ -59,10 +59,10 @@ class MTopDiv(HallucinationDetectionMethod):
 
     """
 
-    model_name: Literal["Mistral-7B-Instruct-v0.1"]
+    model_name: Literal["Mistral-7B-Instruct-v0.1", "Phi-3.5-mini-instruct", "LUSTER", "SC-GPT"]
     dtype: str = "float16"
     device: str = "cuda"
-    cache_dir: str = "cache/mtopdiv/ragtruth_qa"
+    cache_dir: str = "cache/mtopdiv/coqa"
 
     mode: Literal["supervised", "unsupervised"] = "supervised"
     analysis_sites: Union[Literal["all"], list[tuple[int, int]]] = "all"

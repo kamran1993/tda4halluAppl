@@ -14,9 +14,7 @@ from .dataset_abc import HallucinationDetectionDataset
 class SQuAD(HallucinationDetectionDataset):
     """A class to process and manage SQuAD dataset."""
 
-    model_name: tp.Literal[
-        "Mistral-7B-Instruct-v0.1",
-    ]
+    model_name: tp.Literal["Mistral-7B-Instruct-v0.1", "Phi-3.5-mini-instruct", "LUSTER", "SC-GPT"]
     source_dir: str = "data/raw/SQuAD"
     val_size: int | float = 100
     random_state: int = 42

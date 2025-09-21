@@ -35,7 +35,7 @@ def move_causal_lm_output_to_cpu(output: CausalLMOutputWithPast) -> CausalLMOutp
 class LLMBase:
     """Class for extracting internal states of the LLM."""
 
-    model_name: Literal["Mistral-7B-Instruct-v0.1"]
+    model_name: Literal["Mistral-7B-Instruct-v0.1", "Phi-3.5-mini-instruct", "LUSTER", "SC-GPT"]
     dtype: str = "float16"
     device: str = "cuda"
     llm: AutoModelForCausalLM = None

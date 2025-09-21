@@ -20,7 +20,6 @@ src/methods/hallucination_detection_abc.py
 src/methods/llm_base.py
 src/methods/utils.py
 src/preprocess/PreprocessCoQA.py
-src/preprocess/PreprocessRAGTruth.py
 src/preprocess/PreprocessSQuAD.py
 src/preprocess/PreprocessXSum.py
 src/preprocess/__init__.py

@@ -14,9 +14,7 @@ from .dataset_abc import HallucinationDetectionDataset
 class XSum(HallucinationDetectionDataset):
     """A class to process and manage CoQA dataset."""
 
-    model_name: tp.Literal[
-        "Mistral-7B-Instruct-v0.1",
-    ]
+    model_name: tp.Literal["Mistral-7B-Instruct-v0.1", "Phi-3.5-mini-instruct", "LUSTER", "SC-GPT"]
     source_file: str = "data/raw/XSum/xsum_Mistral-7B-Instruct-v0.1.csv"
     split: str = "original"
     val_size: int | float = 100

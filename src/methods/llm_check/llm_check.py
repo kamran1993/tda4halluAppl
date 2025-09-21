@@ -23,7 +23,7 @@ class LLMCheck(HallucinationDetectionMethod):
     ----------
     model_name : Literal["Mistral-7B-Instruct-v0.1"]
         The name of the pre-trained model to use. Choices are
-        'Mistral-7B-Instruct-v0.1'.
+        'Mistral-7B-Instruct-v0.1', 'Phi-3.5-mini-instruct', 'LUSTER' and 'SC-GPT'.
     dtype : str
         The data type used for the LLM inference, e.g., 'float16', 'float32'. Determines the precision of computations.
     device : str
@@ -36,7 +36,7 @@ class LLMCheck(HallucinationDetectionMethod):
 
     """
 
-    model_name: Literal["Mistral-7B-Instruct-v0.1"]
+    model_name: Literal["Mistral-7B-Instruct-v0.1", "Phi-3.5-mini-instruct", "LUSTER", "SC-GPT"]
     dtype: str = "float16"
     device: str = "cuda"
     cache_dir: str = "cache/llm_check"
