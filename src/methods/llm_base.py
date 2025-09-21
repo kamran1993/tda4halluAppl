@@ -47,7 +47,13 @@ class LLMBase:
 
     def get_model_path(self):
         if self.model_name == "Mistral-7B-Instruct-v0.1":
-            model_path = "/gpfs/project/kaali100/mistral-7b"
+            model_path = "../../.../models/mistral-7b"
+        elif self.model_name == "Phi-3.5-mini-instruct":
+            model_path = "../../../models/phi-3.5-mini-instruct"
+        elif self.model_name == "LUSTER":
+            model_path = "../../../models/LUSTER/data/model_checkpoints/luster-full"
+        elif self.model_name == "SC-GPT":
+            model_path = "../../../models/SC-GPT"
         else:
             raise ValueError(f"Unsupported model: {self.model_name}")
 
@@ -59,12 +65,12 @@ class LLMBase:
         # Load API key based on the model
         # torch.set_default_tensor_type(torch.cuda.HalfTensor)
 
-        model_id = self.get_model_path()
+        model_path = self.get_model_path()
 
         llm = AutoModelForCausalLM.from_pretrained(
-            model_id, torch_dtype=self.dtype, device_map=self.device, attn_implementation="eager"
+            model_path, torch_dtype=self.dtype, device_map=self.device, attn_implementation="eager"
         )
-        tokenizer = AutoTokenizer.from_pretrained(model_id)
+        tokenizer = AutoTokenizer.from_pretrained(model_path)
 
         logger.info(f"{self.model_name} has been successfully instantiated.")
 

@@ -22,7 +22,10 @@ device = "cuda"
 
 load_dotenv()
 names_dict = {
-    "Mistral-7B-Instruct-v0.1": "mistralai/Mistral-7B-Instruct-v0.1",
+    "Mistral-7B-Instruct-v0.1": "../models/mistral-7b",
+    "Phi-3.5-mini-instruct": "../models/phi-3.5-mini-instruct",
+    "LUSTER": "../../../models/LUSTER/data/model_checkpoints/luster-full",
+    "SC_GPT": "../../../models/SC-GPT"
 }
 
 
@@ -197,7 +200,7 @@ def calc_features(
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("--model_name", type=str, default="Mistral-7B-Instruct-v0.1")
-    parser.add_argument("--preprocess", type=str, default="ragtruth_qa")
+    parser.add_argument("--preprocess", type=str, default="coqa")
     parser.add_argument(
         "--save_dir", type=str, default="/app/cache/traditional_features"
     )
@@ -242,12 +245,11 @@ if __name__ == "__main__":
     dataset = instantiate(cfg["preprocess"])
     X, y, train_indices, test_indices = dataset.process()
 
-    model_id = names_dict[model_name]
-    login(os.getenv("HUGGING_FACE_API_KEY"))
+    model_path = names_dict[model_name]
 
-    llm = AutoModelForCausalLM.from_pretrained(model_id)
+    llm = AutoModelForCausalLM.from_pretrained(model_path)
     llm = llm.half().to(device)
-    tokenizer = AutoTokenizer.from_pretrained(model_id)
+    tokenizer = AutoTokenizer.from_pretrained(model_path)
 
     features = defaultdict(list)
     n_layers = 32
