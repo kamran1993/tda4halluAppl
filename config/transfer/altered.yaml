@@ -1,0 +1,4 @@
+_target_: src.preprocess.Altered
+source_file: data/raw/altered/altered.jsonl
+val_size: 150
+random_state: 42

@@ -5,7 +5,6 @@ import numpy as np
 import pandas as pd
 from numpy import ndarray
 from sklearn.model_selection import train_test_split
-from transformers import AutoTokenizer
 
 from .dataset_abc import HallucinationDetectionDataset
 
@@ -44,11 +43,6 @@ class CoQA(HallucinationDetectionDataset):
 
     def process(self) -> tuple[pd.DataFrame, pd.Series, ndarray, ndarray | None]:
         df = self.load_data()
-
-        def insert_context_question(row):
-            # Assuming 'prompt' is the template where you want to insert context and question
-            new_prompt = row["prompt"].format(row["context"], row["question"])
-            return new_prompt
 
         # add dataset name
         df["name"] = "coqa"

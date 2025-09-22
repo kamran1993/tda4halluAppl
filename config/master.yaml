@@ -7,4 +7,4 @@ defaults:
 
 
 model_name: Mistral-7B-Instruct-v0.1
-transfer_names: ["squad", "xsum"]
+transfer_names: ["altered"]

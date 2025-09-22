@@ -5,7 +5,6 @@ import numpy as np
 import pandas as pd
 from numpy import ndarray
 from sklearn.model_selection import train_test_split
-from transformers import AutoTokenizer
 
 from .dataset_abc import HallucinationDetectionDataset
 
@@ -39,11 +38,6 @@ class SQuAD(HallucinationDetectionDataset):
     def process(self) -> tuple[pd.DataFrame, pd.Series, ndarray, ndarray | None]:
         df = self.load_data()
 
-        def insert_context_question(row):
-            # Assuming 'prompt' is the template where you want to insert context and question
-            new_prompt = row["prompt"].format(row["context"], row["question"])
-            return new_prompt
-
         # add dataset name
         df["name"] = "squad"
 
@@ -63,17 +57,6 @@ class SQuAD(HallucinationDetectionDataset):
             if self.model_name in ["Mistral-7B-Instruct-v0.1"]:
                 df["id"] = df.index
             df["response"] = df["response"].apply(lambda x: f"{x}</s>")
-
-            def prompt_to_template(prompt: str):
-                messages = [
-                    {"role": "user", "content": prompt},
-                ]
-                return tokenizer.apply_chat_template(
-                    messages, tokenize=False, add_generation_prompt=True
-                )
-
-            df["prompt"] = df["prompt"].apply(prompt_to_template)
-            df["response"] = df["response"].apply(lambda x: f"{x}")
         else:
             raise NotImplementedError(
                 f"This model is not supported yet: {self.model_name}"

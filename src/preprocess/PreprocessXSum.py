@@ -5,7 +5,6 @@ import numpy as np
 import pandas as pd
 from numpy import ndarray
 from sklearn.model_selection import train_test_split
-from transformers import AutoTokenizer
 
 from .dataset_abc import HallucinationDetectionDataset
 
@@ -66,4 +65,3 @@ class XSum(HallucinationDetectionDataset):
             train_indices,
             test_indices,
         )
-1
