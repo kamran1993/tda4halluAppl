@@ -12,22 +12,22 @@ from .dataset_abc import HallucinationDetectionDataset
 
 @dataclass
 class Altered(HallucinationDetectionDataset):
-    """A class to process and manage CoQA dataset."""
+    """A class to process and manage altered dataset."""
 
     model_name: tp.Literal["Mistral-7B-Instruct-v0.1", "Phi-3.5-mini-instruct", "LUSTER", "SC-GPT"]
     source_file: str = "data/raw/altered/altered.jsonl"
     split: str = "original"
     val_size: int | float = 100
+    train_size: int | float = 1000
     random_state: int = 42
 
     def split_data(self, df: pd.DataFrame) -> tuple[np.ndarray[int], np.ndarray[int]]:
         """Split."""
         indices = np.arange(len(df))  # Create an array of integer indices
-        #self.val_size = len(indices)
         if self.val_size == len(indices):
             return None, indices
         train_test_indices, val_indices = train_test_split(
-            indices, test_size=self.val_size, random_state=self.random_state
+            indices, test_size=self.val_size, train_size=self.train_size, random_state=self.random_state
         )
         return train_test_indices, val_indices
 
