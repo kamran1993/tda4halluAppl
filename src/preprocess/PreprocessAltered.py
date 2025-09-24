@@ -47,8 +47,6 @@ class Altered(HallucinationDetectionDataset):
 
         # add dataset name
         df["name"] = "altered"
-        df = df.drop("prompt", axis=1)
-        df.rename(columns={"dialogue_acts": "prompt"}, inplace=True)
         df.rename(columns={"alteration_meta": "hallucination"}, inplace=True)
         df.rename(columns={"utterance": "response"}, inplace=True)
 
@@ -59,9 +57,7 @@ class Altered(HallucinationDetectionDataset):
             # Non-empty alteration_meta means that the utterance is "hallucinated"
             df["hallucination"] = df["hallucination"] != {'field_drops': [], 'injected_noise': [], 'fallback_kept': []}
             df["id"] = df.index
-            df["prompt"] = df["prompt"].apply(lambda x: f"<s>[INST] {x} [/INST]")
             df["response"] = df["response"].apply(lambda x: f"{x} </s>")
-
         else:
             raise NotImplementedError(
                 f"This model is not supported yet: {self.model_name}"

@@ -1,10 +1,10 @@
 defaults:
   - method: mtopdiv
-  - preprocess: coqa
-  - transfer: coqa
+  - preprocess: altered
+  - transfer: altered
   - evaluation: default
   - _self_
 
 
 model_name: Mistral-7B-Instruct-v0.1
-transfer_names: ["altered"]
+transfer_names: []
