@@ -38,9 +38,8 @@ class Altered(HallucinationDetectionDataset):
 
     def process(self) -> tuple[pd.DataFrame, pd.Series, ndarray, ndarray | None]:
         df = self.load_data()
-        df["id"] = df.index
         # use smaller sample since the whole dataset is too big
-        df = train_test_split(test_size=self.sample_size, random_state=self.random_state)
+        df = df.sample(self.sample_size, random_state=self.random_state)
 
         def insert_context_question(row):
             prompt_for_nlg = "Create one response in natural language " \
@@ -48,14 +47,14 @@ class Altered(HallucinationDetectionDataset):
             new_prompt = "<s>[INST] " + prompt_for_nlg + json.dumps(row["prompt"]) + "[/INST]"
             return new_prompt
 
-        # add dataset name
-        df["name"] = "altered"
+        df.rename(columns={"condition": "name"}, inplace=True)
         df.rename(columns={"alteration_meta": "hallucination"}, inplace=True)
         df.rename(columns={"utterance": "response"}, inplace=True)
 
         if self.model_name in [
             "Mistral-7B-Instruct-v0.1",
         ]:
+            df["id"] = df.index
             df["prompt"] = df.apply(insert_context_question, axis=1)
             # Non-empty alteration_meta means that the utterance is "hallucinated"
             df["hallucination"] = df["hallucination"] != {'field_drops': [], 'injected_noise': [], 'fallback_kept': []}
