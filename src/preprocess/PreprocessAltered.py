@@ -18,7 +18,7 @@ class Altered(HallucinationDetectionDataset):
     source_file: str = "data/raw/altered/altered.jsonl"
     split: str = "original"
     val_size: int | float = 100
-    train_size: int | float = 1000
+    sample_size: int | float = 1000
     random_state: int = 42
 
     def split_data(self, df: pd.DataFrame) -> tuple[np.ndarray[int], np.ndarray[int]]:
@@ -27,7 +27,7 @@ class Altered(HallucinationDetectionDataset):
         if self.val_size == len(indices):
             return None, indices
         train_test_indices, val_indices = train_test_split(
-            indices, test_size=self.val_size, train_size=self.train_size, random_state=self.random_state
+            indices, test_size=self.val_size, random_state=self.random_state
         )
         return train_test_indices, val_indices
 
@@ -38,6 +38,9 @@ class Altered(HallucinationDetectionDataset):
 
     def process(self) -> tuple[pd.DataFrame, pd.Series, ndarray, ndarray | None]:
         df = self.load_data()
+        df["id"] = df.index
+        # use smaller sample since the whole dataset is too big
+        df = train_test_split(test_size=self.sample_size, random_state=self.random_state)
 
         def insert_context_question(row):
             prompt_for_nlg = "Create one response in natural language " \
@@ -56,7 +59,6 @@ class Altered(HallucinationDetectionDataset):
             df["prompt"] = df.apply(insert_context_question, axis=1)
             # Non-empty alteration_meta means that the utterance is "hallucinated"
             df["hallucination"] = df["hallucination"] != {'field_drops': [], 'injected_noise': [], 'fallback_kept': []}
-            df["id"] = df.index
             df["response"] = df["response"].apply(lambda x: f"{x} </s>")
         else:
             raise NotImplementedError(
