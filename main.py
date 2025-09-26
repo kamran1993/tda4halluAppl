@@ -66,12 +66,13 @@ def main(cfg: OmegaConf):
     table_str, raw_table = process_metrics(metrics, None)  # Pass None instead of experiment
     logger.success(f"Results for cross validation on {dataset.__class__.__name__}")
     logger.info(f"Final test AUROC: {raw_table['roc_auc'].loc['test']['mean']:.3f}")
-    print("Results for cross validation on {dataset.__class__.__name__}")
+    print(f"Results for cross validation on {dataset.__class__.__name__}")
     print(f"Final test AUROC: {raw_table['roc_auc'].loc['test']['mean']:.3f}")
     print(table_str)
 
-    logger.info("Transfering model on another dataset")
-    print("Transfering model on another dataset")
+    if len(transfer_names) > 0:
+        logger.info("Transfering model on another dataset")
+        print("Transfering model on another dataset")
     for transfer_name in transfer_names:
         with open(f"config/transfer/{transfer_name}.yaml") as f:
             transfer_cfg = yaml.load(f, Loader=yaml.FullLoader)
