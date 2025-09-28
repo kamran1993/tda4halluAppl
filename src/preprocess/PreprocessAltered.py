@@ -52,7 +52,7 @@ class Altered(HallucinationDetectionDataset):
         df.rename(columns={"utterance": "response"}, inplace=True)
 
         if self.model_name in [
-            "Mistral-7B-Instruct-v0.1",
+            "Mistral-7B-Instruct-v0.1", "Phi-3.5-mini-instruct", "LUSTER", "SC-GPT",
         ]:
             df["id"] = df.index
             df["prompt"] = df.apply(insert_context_question, axis=1)

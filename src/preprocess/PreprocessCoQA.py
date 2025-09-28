@@ -48,7 +48,7 @@ class CoQA(HallucinationDetectionDataset):
         df["name"] = "coqa"
         df.rename(columns={"generated_answer": "response"}, inplace=True)
         if self.model_name in [
-            "Mistral-7B-Instruct-v0.1",
+            "Mistral-7B-Instruct-v0.1", "Phi-3.5-mini-instruct", "LUSTER", "SC-GPT",
         ]:
             df["prompt"] = df["context"] + " Q: " + df["question"] + " A:"
             df["id"] = df.index

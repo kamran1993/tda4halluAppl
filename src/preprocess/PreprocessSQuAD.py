@@ -43,7 +43,7 @@ class SQuAD(HallucinationDetectionDataset):
 
         df.rename(columns={"generated_answer": "response"}, inplace=True)
         if self.model_name in [
-            "Mistral-7B-Instruct-v0.1",
+            "Mistral-7B-Instruct-v0.1", "Phi-3.5-mini-instruct", "LUSTER", "SC-GPT",
         ]:
             df["prompt"] = (
                 "<s>[INST] "

@@ -49,7 +49,7 @@ class XSum(HallucinationDetectionDataset):
 
         df["prompt"] = df.apply(insert_context_question, axis=1)
         if self.model_name in [
-            "Mistral-7B-Instruct-v0.1",
+            "Mistral-7B-Instruct-v0.1", "Phi-3.5-mini-instruct", "LUSTER", "SC-GPT",
         ]:
             df["prompt"] = df["prompt"].apply(lambda x: f"<s>[INST] {x} [/INST]")
             df["response"] = df["response"].apply(lambda x: f"{x} </s>")
