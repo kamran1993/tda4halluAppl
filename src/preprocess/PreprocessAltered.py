@@ -41,24 +41,30 @@ class Altered(HallucinationDetectionDataset):
         # use smaller sample since the whole dataset is too big
         df = df.sample(self.sample_size, random_state=self.random_state)
 
-        def insert_context_question(row):
-            prompt_for_nlg = "Create one response in natural language " \
-                             "from this dialogue act. Create nothing else. "
+        prompt_for_nlg = "Create one response in natural language " \
+                         "from this dialogue act. Create nothing else. "
+
+        def insert_context_question_mistral(row):
             new_prompt = "<s>[INST] " + prompt_for_nlg + json.dumps(row["prompt"]) + "[/INST]"
+            return new_prompt
+
+        def insert_context_question(row):
+            new_prompt = "<s><|user|> " + prompt_for_nlg + json.dumps(row["prompt"]) + "<|end|>"
             return new_prompt
 
         df.rename(columns={"condition": "name"}, inplace=True)
         df.rename(columns={"alteration_meta": "hallucination"}, inplace=True)
         df.rename(columns={"utterance": "response"}, inplace=True)
 
-        if self.model_name in [
-            "Mistral-7B-Instruct-v0.1", "Phi-3.5-mini-instruct", "LUSTER", "SC-GPT",
-        ]:
-            df["id"] = df.index
-            df["prompt"] = df.apply(insert_context_question, axis=1)
-            # Non-empty alteration_meta means that the utterance is "hallucinated"
-            df["hallucination"] = df["hallucination"] != {'field_drops': [], 'injected_noise': [], 'fallback_kept': []}
+        df["id"] = df.index
+        # Non-empty alteration_meta means that the utterance is "hallucinated"
+        df["hallucination"] = df["hallucination"] != {'field_drops': [], 'injected_noise': [], 'fallback_kept': []}
+        if self.model_name =="Mistral-7B-Instruct-v0.1":
+            df["prompt"] = df.apply(insert_context_question_mistral, axis=1)
             df["response"] = df["response"].apply(lambda x: f"{x} </s>")
+        elif self.model_name in ["Phi-3.5-mini-instruct", "LUSTER", "SC-GPT"]:
+            df["prompt"] = df.apply(insert_context_question, axis=1)
+            df["response"] = df["response"].apply(lambda x: f"<|assistant|>{x}<|end|><|endoftext|>")
         else:
             raise NotImplementedError(
                 f"This model is not supported yet: {self.model_name}"
