@@ -3,7 +3,6 @@ from dataclasses import dataclass
 
 import numpy as np
 import pandas as pd
-import json
 from numpy import ndarray
 from sklearn.model_selection import train_test_split
 
@@ -45,11 +44,11 @@ class Altered(HallucinationDetectionDataset):
                          "from this dialogue act. Create nothing else. "
 
         def insert_context_question_mistral(row):
-            new_prompt = "<s>[INST] " + prompt_for_nlg + json.dumps(row["prompt"]) + "[/INST]"
+            new_prompt = f"<s>[INST]{prompt_for_nlg}{row['prompt']}[/INST]"
             return new_prompt
 
         def insert_context_question(row):
-            new_prompt = "<s><|user|> " + prompt_for_nlg + json.dumps(row["prompt"]) + "<|end|>"
+            new_prompt = f"<s><|user|>{prompt_for_nlg}{row['prompt']}<|end|>"
             return new_prompt
 
         df.rename(columns={"condition": "name"}, inplace=True)
@@ -61,7 +60,7 @@ class Altered(HallucinationDetectionDataset):
         df["hallucination"] = df["hallucination"] != {'field_drops': [], 'injected_noise': [], 'fallback_kept': []}
         if self.model_name =="Mistral-7B-Instruct-v0.1":
             df["prompt"] = df.apply(insert_context_question_mistral, axis=1)
-            df["response"] = df["response"].apply(lambda x: f"{x} </s>")
+            df["response"] = df["response"].apply(lambda x: f"{x}</s>")
         elif self.model_name in ["Phi-3.5-mini-instruct", "LUSTER", "SC-GPT"]:
             df["prompt"] = df.apply(insert_context_question, axis=1)
             df["response"] = df["response"].apply(lambda x: f"<|assistant|>{x}<|end|><|endoftext|>")
