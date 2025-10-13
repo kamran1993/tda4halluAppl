@@ -46,7 +46,7 @@ def process_metrics(metrics: list[dict[str, str | float]], experiment=None):
             logger.debug(f"{dataset} metrics (seed {record.get('seed', 'N/A')}): {metrics_str}")
 
     # Aggregation and formatting of the metrics
-    agg_df = df.groupby("dataset")[["roc_auc", "pr_auc", "f1"]].agg(["mean", "std"])
+    agg_df = df.groupby("dataset")[["roc_auc", "pr_auc", "f1", "hallu_prop"]].agg(["mean", "std"])
 
     formatted_df = agg_df.apply(
         lambda row: row.xs("mean", level=1).apply(lambda x: f"{x:.3f}")

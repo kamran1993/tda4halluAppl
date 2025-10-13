@@ -78,6 +78,7 @@ def evaluate(
                 "roc_auc": roc_auc,
                 "f1": f1,
                 "pr_auc": auc(recall, precision),
+                "hallu_prop": sum(y_split)/len(y_split),
                 "precision": precision.tolist(),
                 "recall": recall.tolist(),
                 "seed": random_state,
