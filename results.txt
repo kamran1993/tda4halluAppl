@@ -1,0 +1,72 @@
+Comparison of results using H0- and H1-barcodes:
+H0 (default): myscript.sh.o15012735
+altered_mtopdiv_Mistral-7B-Instruct-v0.1
+SELECTED HEADS: [(np.int64(0), np.int64(19)), (np.int64(0), np.int64(17)), (np.int64(31), np.int64(0)), (np.int64(15), np.int64(2)), (np.int64(0), np.int64(27))]
+Results for cross validation on {dataset.__class__.__name__}
+Final test AUROC: 0.884
+| dataset   | roc_auc       | pr_auc        | f1            |
+|:----------|:--------------|:--------------|:--------------|
+| train     | 0.874 ± 0.002 | 0.924 ± 0.006 | 0.849 ± 0.051 |
+| val       | 0.879 ± 0.030 | 0.938 ± 0.028 | 0.895 ± 0.032 |
+| test      | 0.884 ± 0.019 | 0.933 ± 0.020 | 0.841 ± 0.048 |
+
+H1: myscript.sh.o15509458
+altered_mtopdiv_Mistral-7B-Instruct-v0.1
+SELECTED HEADS: [(np.int64(11), np.int64(17)), (np.int64(17), np.int64(22))]
+Results for cross validation on Altered
+Final test AUROC: 0.872
+| dataset   | roc_auc       | pr_auc        | f1            |
+|:----------|:--------------|:--------------|:--------------|
+| train     | 0.866 ± 0.002 | 0.912 ± 0.008 | 0.858 ± 0.028 |
+| val       | 0.868 ± 0.030 | 0.928 ± 0.030 | 0.896 ± 0.020 |
+| test      | 0.872 ± 0.020 | 0.923 ± 0.028 | 0.859 ± 0.025 |
+
+
+Phi-3.5-mini-instruct with hallucination proportion output:
+myscript.sh.o15511205
+altered_mtopdiv_Phi-3.5-mini-instruct
+SELECTED HEADS: [(np.int64(0), np.int64(0)), (np.int64(0), np.int64(18))]
+Results for cross validation on Altered
+Final test AUROC: 0.878
+| dataset   | roc_auc       | pr_auc        | f1            | hallu_prop    |
+|:----------|:--------------|:--------------|:--------------|:--------------|
+| train     | 0.872 ± 0.002 | 0.919 ± 0.007 | 0.865 ± 0.016 | 0.679 ± 0.012 |
+| val       | 0.876 ± 0.029 | 0.935 ± 0.029 | 0.892 ± 0.031 | 0.697 ± 0.031 |
+| test      | 0.878 ± 0.016 | 0.926 ± 0.024 | 0.865 ± 0.019 | 0.684 ± 0.032 |
+
+
+Comparison of results using different random states:
+random_state==41: myscript.sh.o15511850
+altered_mtopdiv_Mistral-7B-Instruct-v0.1
+SELECTED HEADS: [(np.int64(16), np.int64(25)), (np.int64(14), np.int64(23)), (np.int64(21), np.int64(6)), (np.int64(16), np.int64(27)), (np.int64(19), np.int64(6))]
+Results for cross validation on Altered
+Final test AUROC: 0.896
+| dataset   | roc_auc       | pr_auc        | f1            | hallu_prop    |
+|:----------|:--------------|:--------------|:--------------|:--------------|
+| train     | 0.886 ± 0.005 | 0.940 ± 0.005 | 0.863 ± 0.008 | 0.679 ± 0.012 |
+| val       | 0.887 ± 0.032 | 0.947 ± 0.025 | 0.895 ± 0.030 | 0.697 ± 0.031 |
+| test      | 0.896 ± 0.024 | 0.947 ± 0.018 | 0.871 ± 0.015 | 0.684 ± 0.032 |
+
+random_state==42: myscript.sh.o15511533
+altered_mtopdiv_Mistral-7B-Instruct-v0.1
+SELECTED HEADS: [(np.int64(0), np.int64(19)), (np.int64(0), np.int64(17))]
+Results for cross validation on Altered
+Final test AUROC: 0.883
+| dataset   | roc_auc       | pr_auc        | f1            | hallu_prop    |
+|:----------|:--------------|:--------------|:--------------|:--------------|
+| train     | 0.873 ± 0.002 | 0.921 ± 0.007 | 0.865 ± 0.014 | 0.679 ± 0.012 |
+| val       | 0.879 ± 0.031 | 0.937 ± 0.029 | 0.894 ± 0.032 | 0.697 ± 0.031 |
+| test      | 0.883 ± 0.018 | 0.932 ± 0.021 | 0.866 ± 0.021 | 0.684 ± 0.032 |
+
+
+Results using stratified dataset (reduced proportion of hallucinated data from 70% to 30%):
+myscript.sh.o15579051
+altered_mtopdiv_Phi-3.5-mini-instruct
+SELECTED HEADS: [(np.int64(19), np.int64(5)), (np.int64(3), np.int64(30)), (np.int64(4), np.int64(17)), (np.int64(11), np.int64(5)), (np.int64(19), np.int64(7)), (np.int64(15), np.int64(3))]
+Results for cross validation on Altered
+Final test AUROC: 0.910
+| dataset   | roc_auc       | pr_auc        | f1            | hallu_prop    |
+|:----------|:--------------|:--------------|:--------------|:--------------|
+| train     | 0.910 ± 0.008 | 0.827 ± 0.022 | 0.740 ± 0.011 | 0.296 ± 0.012 |
+| val       | 0.876 ± 0.040 | 0.791 ± 0.043 | 0.767 ± 0.057 | 0.301 ± 0.052 |
+| test      | 0.910 ± 0.027 | 0.822 ± 0.048 | 0.744 ± 0.022 | 0.301 ± 0.030 |
