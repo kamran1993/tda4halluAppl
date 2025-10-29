@@ -1,10 +1,10 @@
 defaults:
   - method: mtopdiv
-  - preprocess: altered
-  - transfer: altered
+  - preprocess: lusterdata
+  - transfer: lusterdata
   - evaluation: default
   - _self_
 
 
-model_name: Phi-3.5-mini-instruct
+model_name: LUSTER
 transfer_names: []
