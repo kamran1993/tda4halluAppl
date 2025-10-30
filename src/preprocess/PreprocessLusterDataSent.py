@@ -32,25 +32,12 @@ class LusterDataSent(HallucinationDetectionDataset):
         return train_test_indices, val_indices
 
     def process(self) -> tuple[pd.DataFrame, pd.Series, ndarray, ndarray | None]:
-        df = load_create_dataframe.createMultiwoz21DataFrame(
-            load_create_dataframe.load_training_logs("experiences_succ+sent"))
-
-        prompt_for_nlg = "Create one response in natural language " \
-                         "from this dialogue act. Create nothing else. "
-
-        def insert_context_question(row):
-            new_prompt = f"<s><|user|>{prompt_for_nlg}{row['prompt']}<|end|>"
-            return new_prompt
-
-        df["id"] = df.index
-
-        if self.model_name == "LUSTER":
-            df["prompt"] = df.apply(insert_context_question, axis=1)
-            df["response"] = df["response"].apply(lambda x: f"<|assistant|>{x}<|end|><|endoftext|>")
-        else:
+        if self.model_name != "LUSTER":
             raise NotImplementedError(
                 f"This model is not supported yet: {self.model_name}"
             )
+        df = load_create_dataframe.createMultiwoz21DataFrame(
+            load_create_dataframe.load_training_logs("experiences_succ+sent"))
         train_indices, test_indices = self.split_data(df)
         return (
             pd.DataFrame(df[["id", "prompt", "response", "name"]]),

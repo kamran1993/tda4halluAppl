@@ -73,11 +73,11 @@ Final test AUROC: 0.910
 
 
 lusterdata_mtopdiv_LUSTER
-SELECTED HEADS: [(np.int64(1), np.int64(17))]
+SELECTED HEADS: [(np.int64(13), np.int64(24)), (np.int64(16), np.int64(22)), (np.int64(9), np.int64(18))]
 Results for cross validation on LusterData
-Final test AUROC: 0.744
+Final test AUROC: 0.821
 | dataset   | roc_auc       | pr_auc        | f1            | hallu_prop    |
 |:----------|:--------------|:--------------|:--------------|:--------------|
-| train     | 0.780 ± 0.020 | 0.291 ± 0.035 | 0.363 ± 0.020 | 0.089 ± 0.010 |
-| val       | 0.763 ± 0.045 | 0.324 ± 0.063 | 0.420 ± 0.061 | 0.110 ± 0.029 |
-| test      | 0.744 ± 0.036 | 0.253 ± 0.086 | 0.321 ± 0.032 | 0.094 ± 0.016 |
+| train     | 0.835 ± 0.019 | 0.463 ± 0.066 | 0.472 ± 0.036 | 0.095 ± 0.005 |
+| val       | 0.826 ± 0.047 | 0.543 ± 0.100 | 0.577 ± 0.066 | 0.093 ± 0.027 |
+| test      | 0.821 ± 0.040 | 0.436 ± 0.105 | 0.459 ± 0.137 | 0.097 ± 0.007 |
