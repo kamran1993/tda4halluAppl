@@ -13,8 +13,7 @@ from sklearn.model_selection import train_test_split
 sys.path.append(os.environ.get('LUSTER_REPOSITORY_BASE_PATH'))
 from luster.process_training_logs.prepare_imports_for_pickle_loading import prepare_imports_for_pickle_loading
 from luster.memory import PolicyHistoryItem
-sys.path.append(os.environ.get('CONVLAB3_REPOSITORY_BASE_PATH'))
-from convlab.nlg import load_and_label_data
+from src.preprocess import labelLusterData
 
 from .dataset_abc import HallucinationDetectionDataset
 
@@ -75,7 +74,7 @@ class LusterDataSent(HallucinationDetectionDataset):
                 f"This model is not supported yet: {self.model_name}"
             )
         df = self.load_data()
-        labels = load_and_label_data.load_data_and_create_hallu_labels(
+        labels = labelLusterData.load_data_and_create_hallu_labels(
             os.environ['LUSTER_REPOSITORY_BASE_PATH']
             + "/data/training_logs/experiences_succ+sent/analysis_outputs/converted_luster_log.json"
         )
