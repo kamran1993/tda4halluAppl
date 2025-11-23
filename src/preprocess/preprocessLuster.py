@@ -53,12 +53,12 @@ class PreprocessLuster(HallucinationDetectionDataset):
         df = pd.DataFrame(columns=["id", "prompt", "response", "name"])
         ind = 0
         for turn in policy_histories_list:
-            ind += 1
             utterance = turn.system_response
             prompt = turn.full_seq_with_top_1_response
             utterance = ' system : ' + utterance + '</s>'
             prompt = prompt.removesuffix(utterance)
-            df.loc[ind - 1] = [ind, prompt, utterance, dataset_name]
+            df.loc[ind] = [ind, prompt, utterance, dataset_name]
+            ind += 1
 
         return df
 
