@@ -200,15 +200,13 @@ INTENT2PHRASES_LOCAL: Dict[str, List[str]] = {
         r"\breservation\s+(?:confirmed|made)\b",
         r"\bbooking\s+(?:confirmed|successful)\b",
     ],
-    "offerbook": ["would you like", "can i book", "may i book", "shall i book", "would you like a ticket", "can i get you a ticket"],
+    "offerbook": ["can i book", "may i book", "shall i book", "would you like a ticket", "can i get you a ticket"],
     "request": [r"\bwhat\b", r"\bwhich\b", r"\bwhen\b", r"\bwhere\b"],  # global question words (only when utterance has '?')
 }
 
 NAME_EXPOSING_TRIGGERS: List[str] = [
     "called", "named", "name is", "closest i can find is",
     "recommend", "may i recommend",
-    "is located", "located at", "there is", "there s",
-    "i have the", "we have the", "there is a", "there is the",
 ]
 
 # =========================
