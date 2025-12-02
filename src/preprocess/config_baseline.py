@@ -1,4 +1,6 @@
 """
+Retrieved from convlab/nlg/
+
 Configuration file for the Systematic Hallucination Analyzer
 """
 

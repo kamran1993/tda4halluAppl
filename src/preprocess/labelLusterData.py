@@ -801,9 +801,10 @@ def create_hallucination_labels(
     val2ds: Dict[str, List[str]],
     domain2slots: Dict[str, List[str]],
     use_original_acts: bool = False,
-) -> Dict[str, Any]:
+) -> Tuple[pd.Series, List]:
 
     labels: List = []
+    allRedundantDetails: List = []
     for rec in records:
         # choose DA field
         if use_original_acts:
@@ -817,6 +818,7 @@ def create_hallucination_labels(
             acts_size = sum(len(da.get(b, [])) for b in ("categorical", "non-categorical", "binary"))
         if acts_size == 0:
             labels.append(0)
+            allRedundantDetails.append([])
             continue
 
         cand = extract_candidate(rec)
@@ -843,6 +845,7 @@ def create_hallucination_labels(
         redundant_details += detect_extra_time(cand, expected_set, slots_in_da)
         redundant_details += detect_intent_phrases(cand, cand_norm, acts_with_alts, redundant_details)
         redundant_details += detect_slot_specific_requests(cand_norm, domains_in_da, ds2intents, domain2slots)
+        allRedundantDetails.append(redundant_details)
         redundant_count = len(redundant_details)
 
         if redundant_count > 0:
@@ -850,13 +853,13 @@ def create_hallucination_labels(
         else:
             labels.append(0)
 
-    return pd.Series(data = labels)
+    return pd.Series(data = labels), allRedundantDetails
 
 
-def load_data_and_create_hallu_labels(predict_result: str) -> List:
+def load_data_and_create_hallu_labels(predict_result: str) -> Tuple[pd.Series, List]:
     """
       - predict_result: path to predictions file (JSON array; strict like upstream)
-      - returns dataframe consisting of data in predict_result together with corresponding hallucination labels
+      - returns hallucination labels and list of all redundancies
     """
 
     # Strict JSON array load (parity)
@@ -866,6 +869,6 @@ def load_data_and_create_hallu_labels(predict_result: str) -> List:
     ontology = load_ontology("multiwoz21")
     val2ds = build_val2ds_from_ontology_obj(ontology)
     domain2slots = build_domain2slots_from_ontology_obj(ontology)
-    labels = create_hallucination_labels(records, val2ds, domain2slots, use_original_acts=False)
+    labels, allRedundancies = create_hallucination_labels(records, val2ds, domain2slots, use_original_acts=False)
 
-    return labels
+    return labels, allRedundancies

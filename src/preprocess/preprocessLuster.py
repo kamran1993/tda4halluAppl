@@ -3,6 +3,7 @@ from dataclasses import dataclass
 import typing as tp
 import sys
 import os
+import re
 import numpy as np
 import pandas as pd
 from numpy import ndarray
@@ -14,7 +15,7 @@ sys.path.append(os.environ.get('LUSTER_REPOSITORY_BASE_PATH'))
 from luster.process_training_logs.prepare_imports_for_pickle_loading import prepare_imports_for_pickle_loading
 from luster.memory import PolicyHistoryItem
 from luster.evaluation.convert_luster_pkl_to_unified import main as convertLusterPklToJson
-from src.preprocess import labelLusterData
+from src.preprocess import labelLusterData2, labelLusterData
 
 from .dataset_abc import HallucinationDetectionDataset
 
@@ -55,8 +56,10 @@ class PreprocessLuster(HallucinationDetectionDataset):
         for turn in policy_histories_list:
             utterance = turn.system_response
             prompt = turn.full_seq_with_top_1_response
+            match = re.search(r"action :.*?</s>", prompt)
+            if match:
+                prompt = match.group()
             utterance = ' system : ' + utterance + '</s>'
-            prompt = prompt.removesuffix(utterance)
             df.loc[ind] = [ind, prompt, utterance, dataset_name]
             ind += 1
 
@@ -72,8 +75,18 @@ class PreprocessLuster(HallucinationDetectionDataset):
         converted_luster_log_path = self.turns_dir_path + "/converted_luster_log.json"
         if not os.path.isfile(converted_luster_log_path):
             convertLusterPklToJson(pathlib.Path(self.turns_dir_path + "/turns.pkl"))
-        labels = labelLusterData.load_data_and_create_hallu_labels(converted_luster_log_path)
+        labels1, allRedundancies1 = labelLusterData.load_data_and_create_hallu_labels(converted_luster_log_path)
+        labels2, allRedundancies2 = labelLusterData2.load_data_and_create_hallu_labels(converted_luster_log_path)
+        labels = (labels1 & labels2) == 0
         train_indices, test_indices = self.split_data(df)
+        #for i in range(len(labels)):
+        #    if labels.iloc[i]:
+        #        print(i)
+        #        print(df["prompt"].iloc[i])
+        #        print(df["response"].iloc[i])
+        #        print(allRedundancies1[i])
+        #        print(allRedundancies2[i])
+        #        print("\n")
         return (
             pd.DataFrame(df[["id", "prompt", "response", "name"]]),
             labels.astype(int),
