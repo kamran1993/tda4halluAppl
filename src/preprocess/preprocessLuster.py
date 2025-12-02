@@ -77,7 +77,7 @@ class PreprocessLuster(HallucinationDetectionDataset):
             convertLusterPklToJson(pathlib.Path(self.turns_dir_path + "/turns.pkl"))
         labels1, allRedundancies1 = labelLusterData.load_data_and_create_hallu_labels(converted_luster_log_path)
         labels2, allRedundancies2 = labelLusterData2.load_data_and_create_hallu_labels(converted_luster_log_path)
-        labels = (labels1 & labels2) == 0
+        labels = labels1 & labels2
         train_indices, test_indices = self.split_data(df)
         #for i in range(len(labels)):
         #    if labels.iloc[i]:
