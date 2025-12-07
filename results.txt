@@ -118,12 +118,14 @@ Final test AUROC: 0.793
 | test      | 0.793 ± 0.016 | 0.344 ± 0.038 | 0.348 ± 0.042 | 0.126 ± 0.006 |
 
 
-LusterData with labelLusterData- & labelLusterData2-script with inversion of labels
-SELECTED HEADS: [(np.int64(16), np.int64(1))]
+Manual labeling
+myscript.sh.o16368139
+lusterdata_mtopdiv_LUSTER
+SELECTED HEADS: [(np.int64(3), np.int64(31)), (np.int64(31), np.int64(22)), (np.int64(20), np.int64(11))]
 Results for cross validation on LusterData
-Final test AUROC: 0.493
-| dataset   | roc_auc       | pr_auc        | f1            | non-hallu_prop|
+Final test AUROC: 0.860
+| dataset   | roc_auc       | pr_auc        | f1            | hallu_prop    |
 |:----------|:--------------|:--------------|:--------------|:--------------|
-| train     | 0.517 ± 0.017 | 0.893 ± 0.010 | 0.931 ± 0.004 | 0.883 ± 0.004 |
-| val       | 0.497 ± 0.104 | 0.892 ± 0.043 | 0.940 ± 0.009 | 0.893 ± 0.016 |
-| test      | 0.493 ± 0.024 | 0.885 ± 0.014 | 0.924 ± 0.004 | 0.874 ± 0.006 |
+| train     | 0.843 ± 0.010 | 0.622 ± 0.013 | 0.636 ± 0.015 | 0.283 ± 0.004 |
+| val       | 0.860 ± 0.027 | 0.638 ± 0.079 | 0.666 ± 0.054 | 0.246 ± 0.027 |
+| test      | 0.860 ± 0.021 | 0.674 ± 0.048 | 0.676 ± 0.036 | 0.290 ± 0.013 |

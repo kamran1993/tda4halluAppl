@@ -10,6 +10,7 @@ from numpy import ndarray
 import pickle
 import pathlib
 from sklearn.model_selection import train_test_split
+import importlib
 
 sys.path.append(os.environ.get('LUSTER_REPOSITORY_BASE_PATH'))
 from luster.process_training_logs.prepare_imports_for_pickle_loading import prepare_imports_for_pickle_loading
@@ -75,18 +76,19 @@ class PreprocessLuster(HallucinationDetectionDataset):
         converted_luster_log_path = self.turns_dir_path + "/converted_luster_log.json"
         if not os.path.isfile(converted_luster_log_path):
             convertLusterPklToJson(pathlib.Path(self.turns_dir_path + "/turns.pkl"))
-        labels1, allRedundancies1 = labelLusterData.load_data_and_create_hallu_labels(converted_luster_log_path)
-        labels2, allRedundancies2 = labelLusterData2.load_data_and_create_hallu_labels(converted_luster_log_path)
-        labels = labels1 & labels2
+        #labels1, allRedundancies1 = labelLusterData.load_data_and_create_hallu_labels(converted_luster_log_path)
+        #labels2, allRedundancies2 = labelLusterData2.load_data_and_create_hallu_labels(converted_luster_log_path)
+        #labels = labels1 & labels2
+        labels = importlib.import_module("src.preprocess.get_manual_labels").labels
         train_indices, test_indices = self.split_data(df)
-        #for i in range(len(labels)):
-        #    if labels.iloc[i]:
-        #        print(i)
-        #        print(df["prompt"].iloc[i])
-        #        print(df["response"].iloc[i])
-        #        print(allRedundancies1[i])
-        #        print(allRedundancies2[i])
-        #        print("\n")
+        #with open('out.txt', 'w') as f:
+        #    for i in range(len(labels)):
+        #         print(i, file=f)
+        #         print(df["prompt"].iloc[i], file=f)
+        #         print(df["response"].iloc[i], file=f)
+        #         print(allRedundancies1[i], file=f)
+        #         print(allRedundancies2[i], file=f)
+        #         print("\n", file=f)
         return (
             pd.DataFrame(df[["id", "prompt", "response", "name"]]),
             labels.astype(int),
