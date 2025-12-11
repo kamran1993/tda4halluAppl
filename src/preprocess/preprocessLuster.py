@@ -73,22 +73,27 @@ class PreprocessLuster(HallucinationDetectionDataset):
                 f"This model is not supported yet: {self.model_name}"
             )
         df = self.load_data()
-        converted_luster_log_path = self.turns_dir_path + "/converted_luster_log.json"
-        if not os.path.isfile(converted_luster_log_path):
-            convertLusterPklToJson(pathlib.Path(self.turns_dir_path + "/turns.pkl"))
-        #labels1, allRedundancies1 = labelLusterData.load_data_and_create_hallu_labels(converted_luster_log_path)
-        #labels2, allRedundancies2 = labelLusterData2.load_data_and_create_hallu_labels(converted_luster_log_path)
-        #labels = labels1 & labels2
-        labels = importlib.import_module("src.preprocess.get_manual_labels").labels
         train_indices, test_indices = self.split_data(df)
-        #with open('out.txt', 'w') as f:
-        #    for i in range(len(labels)):
-        #         print(i, file=f)
-        #         print(df["prompt"].iloc[i], file=f)
-        #         print(df["response"].iloc[i], file=f)
-        #         print(allRedundancies1[i], file=f)
-        #         print(allRedundancies2[i], file=f)
-        #         print("\n", file=f)
+        # We use the manual labels for LusterData, since the labeling scripts didn't work well.
+        if (self.turns_dir_path == os.environ.get('LUSTER_REPOSITORY_BASE_PATH')\
+                     + "/data/training_logs/experiences_succ/analysis_outputs"):
+            labels = importlib.import_module("src.preprocess.get_manual_labels").labels
+        else:
+            converted_luster_log_path = self.turns_dir_path + "/converted_luster_log.json"
+            if not os.path.isfile(converted_luster_log_path):
+                convertLusterPklToJson(pathlib.Path(self.turns_dir_path + "/turns.pkl"))
+            labels1, allRedundancies1 = labelLusterData.load_data_and_create_hallu_labels(converted_luster_log_path)
+            labels2, allRedundancies2 = labelLusterData2.load_data_and_create_hallu_labels(converted_luster_log_path)
+            labels = labels1 & labels2
+            # Save information on labeling in order to view quality of labels.
+            with open('labeling_information.txt', 'w') as f:
+                for i in range(len(labels)):
+                    print(i, file=f)
+                    print(df["prompt"].iloc[i], file=f)
+                    print(df["response"].iloc[i], file=f)
+                    print(allRedundancies1[i], file=f)
+                    print(allRedundancies2[i], file=f)
+                    print("\n", file=f)
         return (
             pd.DataFrame(df[["id", "prompt", "response", "name"]]),
             labels.astype(int),
